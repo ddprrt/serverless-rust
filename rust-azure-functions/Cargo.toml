@@ -1,0 +1,22 @@
+[package]
+name = "handler"
+version = "0.1.0"
+authors = ["stefan.baumgartner <Stefan.Baumgartner@dynatrace.com>"]
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+warp = "0.3"
+tokio = { version = "1", features = ["rt", "macros", "rt-multi-thread"] }
+itertools = "0.10.1"
+num = "0.4.0"
+
+
+[[bin]]
+name = "handler"
+path = "src/main.rs"
+
+[profile.release]
+opt-level = 3
+lto = true

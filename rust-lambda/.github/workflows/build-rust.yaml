@@ -1,0 +1,31 @@
+name: GitHub Actions Demo
+on: [push]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        target:
+          - x86_64-unknown-linux-gnu
+    env:
+      V8_FROM_SOURCE: true
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+      - name: Install latest Rust toolchain
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          target: ${{ matrix.target }}
+          override: true
+      - name: Build
+        uses: actions-rs/cargo@v1
+
+        with:
+          command: build
+          args: --release --target=${{ matrix.target }}
+      - name: Archive production artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: dist-${{ matrix.target }}
+          path: ./target/${{ matrix.target }}/release/bootstrap
